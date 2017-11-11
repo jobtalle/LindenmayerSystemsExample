@@ -31,19 +31,20 @@ PathShape.prototype = {
 		var height = this.yMax - this.yMin;
 		var xScale = canvas.width / width;
 		var yScale = canvas.height / height;
+		var aspect = canvas.width / canvas.height;
 		var scale = Math.min(xScale, yScale);
 		
 		if(xScale < yScale)
-			yShift = height / 2;
+			yShift = (height * aspect - width) / 2;
 		else
-			xShift = width / 2;
+			xShift = (width - height * aspect) / 2;
 		
 		context.strokeStyle = "black";
 		context.lineWidth = 1 / scale;
 		
 		context.setTransform(
 			scale, 0, 0,
-			scale, scale * (-this.xMin + xShift), scale * (-this.yMin + yShift));
+			scale, scale * -(this.xMin + xShift), scale * -(this.yMin + yShift));
 		context.beginPath();
 		context.moveTo(0, 0);
 		

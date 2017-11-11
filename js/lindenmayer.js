@@ -25,26 +25,27 @@ PathShape.prototype = {
 	
 	render(canvas, margin) {
 		var context = canvas.getContext("2d");
-		var xShift = 0;
-		var yShift = 0;
 		var width = this.xMax - this.xMin;
 		var height = this.yMax - this.yMin;
-		var xScale = canvas.width / width;
-		var yScale = canvas.height / height;
+		var xScale = (canvas.width - 2 * margin) / width;
+		var yScale = (canvas.height - 2 * margin) / height;
 		var aspect = canvas.width / canvas.height;
 		var scale = Math.min(xScale, yScale);
+		var xShift = margin * (width / canvas.width);
+		var yShift = margin * (height / canvas.height);
+		
 		
 		if(xScale < yScale)
-			yShift = (height * aspect - width) / 2;
+			yShift -= (height * aspect - width) / 2;
 		else
-			xShift = (width - height * aspect) / 2;
+			xShift -= (width - height * aspect) / 2;
 		
 		context.strokeStyle = "black";
 		context.lineWidth = 1 / scale;
 		
 		context.setTransform(
 			scale, 0, 0,
-			scale, scale * -(this.xMin + xShift), scale * -(this.yMin + yShift));
+			scale, scale * -(this.xMin - xShift), scale * -(this.yMin - yShift));
 		context.beginPath();
 		context.moveTo(0, 0);
 		
@@ -65,7 +66,7 @@ function Lindenmayer(axiom) {
 Lindenmayer.prototype = {
 	DEG_TO_RAD: 0.017453292519943,
 	ITERATIONS_MIN: 0,
-	ITERATIONS_MAX: 8,
+	ITERATIONS_MAX: 9,
 	RULE_COUNT: 4,
 	MARGIN: 8,
 	

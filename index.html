@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>L-systems</title>
+		<link rel="stylesheet" type="text/css" href="css/style.css">
+		<script src="js/lindenmayer.js"></script>
+	</head>
+	<body>
+		<div id="container">
+			<canvas id="renderer" width=600 height=400></canvas>
+			<div id="controls">
+				<table>
+					<tr>
+						<td>Axiom:</td>
+						<td><input id="l-axiom" type="text" value="A+A--A+A"></input></td>
+					</tr>
+					<tr>
+						<td>Angle:</td>
+						<td><input id="l-angle" type="text" value="60"></input></td>
+					</tr>
+					<tr>
+						<td>Iterations:</td>
+						<td><input id="l-iterations" type="text" value="3"></input></td>
+					</tr>
+					<tr>
+						<td>Rule 1:</td>
+						<td><input id="l-rule-1" type="text" value="A=A+A--A+A"></input></td>
+					</tr>
+					<tr>
+						<td>Rule 2:</td>
+						<td><input id="l-rule-2" type="text"></input></td>
+					</tr>
+					<tr>
+						<td>Rule 3:</td>
+						<td><input id="l-rule-3" type="text"></input></td>
+					</tr>
+					<tr>
+						<td>Rule 4:</td>
+						<td><input id="l-rule-4" type="text"></input></td>
+					</tr>
+					<tr>
+						<td><button id="l-start" onclick="renderAll();">Start</button></td>
+					</tr>
+				</table>
+			</div>
+		</div>
+	</body>
+</html>

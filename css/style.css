@@ -1,0 +1,10 @@
+#container {
+	margin: 0px auto 0px auto;
+	display: block;
+}
+
+#renderer {
+	border: solid;
+	border-width: 1px;
+	border-color: black;
+}

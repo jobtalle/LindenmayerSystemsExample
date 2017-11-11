@@ -23,7 +23,7 @@ PathShape.prototype = {
 		this.y.push(y);
 	},
 	
-	render(canvas) {
+	render(canvas, margin) {
 		var context = canvas.getContext("2d");
 		var xShift = 0;
 		var yShift = 0;
@@ -98,7 +98,7 @@ Lindenmayer.prototype = {
 		var rule = document.getElementById("l-rule-" + index).value.toUpperCase();
 		
 		if(rule != "") {
-			var components = rule.split("=");
+			var components = rule.replace("AXIOM", this.axiom).split("=");
 			
 			this.rules[components[0]] = components[1];
 		}
@@ -150,7 +150,7 @@ Lindenmayer.prototype = {
 		context.setTransform(1, 0, 0, 1, 0, 0);
 		context.clearRect(0, 0, canvas.width, canvas.height);
 		
-		this.getPath().render(canvas);
+		this.getPath().render(canvas, this.MARGIN);
 	}
 }
 

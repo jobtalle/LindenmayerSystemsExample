@@ -13,14 +13,18 @@
 					<tr>
 						<td>Axiom:</td>
 						<td><input id="l-axiom" type="text" value="A++A++A"></input></td>
+						<td><input id="l-render-line" type="radio" name="l-render" onclick="render();" checked></td>
+						<td><label for="l-render-line">Lines</label></td>
 					</tr>
 					<tr>
 						<td>Angle:</td>
 						<td><input id="l-angle" type="text" value="60"></input></td>
+						<td><input id="l-render-fill" type="radio" name="l-render" onclick="render();"></td>
+						<td><label for="l-render-fill">Fill</label></td>
 					</tr>
 					<tr>
 						<td>Iterations:</td>
-						<td><input id="l-iterations" type="text" value="3"></input></td>
+						<td><input id="l-iterations" type="text" value="4"></input></td>
 					</tr>
 					<tr>
 						<td>Rule 1:</td>
@@ -39,10 +43,13 @@
 						<td><input id="l-rule-4" type="text"></input></td>
 					</tr>
 					<tr>
-						<td><button id="l-start" onclick="renderAll();">Start</button></td>
+						<td><button id="l-render" onclick="render();">Render</button></td>
 					</tr>
 				</table>
 			</div>
 		</div>
+		<script>
+			render();
+		</script>
 	</body>
 </html>

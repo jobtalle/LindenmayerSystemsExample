@@ -23,7 +23,7 @@ PathShape.prototype = {
 		this.y.push(y);
 	},
 	
-	render(canvas, margin) {
+	render(canvas, margin, fill) {
 		var context = canvas.getContext("2d");
 		var width = this.xMax - this.xMin;
 		var height = this.yMax - this.yMin;
@@ -52,7 +52,10 @@ PathShape.prototype = {
 		for(var i = 0; i < this.x.length; ++i)
 			context.lineTo(this.x[i], this.y[i]);
 		
-		context.stroke();
+		if(fill)
+			context.fill();
+		else
+			context.stroke();
 	}
 }
 
@@ -61,6 +64,7 @@ function Lindenmayer(axiom) {
 	this.getAngle();
 	this.getIterations();
 	this.getRules();
+	this.getStyle();
 }
 
 Lindenmayer.prototype = {
@@ -103,6 +107,10 @@ Lindenmayer.prototype = {
 			
 			this.rules[components[0]] = components[1];
 		}
+	},
+	
+	getStyle() {
+		this.fill = document.getElementById("l-render-fill").checked;
 	},
 	
 	replaceAll(str, map) {
@@ -151,18 +159,11 @@ Lindenmayer.prototype = {
 		context.setTransform(1, 0, 0, 1, 0, 0);
 		context.clearRect(0, 0, canvas.width, canvas.height);
 		
-		this.getPath().render(canvas, this.MARGIN);
+		this.getPath().render(canvas, this.MARGIN, this.fill);
 	}
 }
 
-function renderAxiom() {
-	var lindenmayer = new Lindenmayer();
-	
-	lindenmayer.applyRules(1);
-	lindenmayer.render();
-}
-
-function renderAll() {
+function render() {
 	var lindenmayer = new Lindenmayer();
 	
 	lindenmayer.applyRules();

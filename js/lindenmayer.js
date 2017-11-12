@@ -1,30 +1,46 @@
 function PathShape() {
 	this.x = [];
 	this.y = [];
+	this.cuts = [];
 	this.xMin = 0;
 	this.yMin = 0;
 	this.xMax = 0;
 	this.yMax = 0;
+	this.cutting = false;
 }
 
 PathShape.prototype = {
-	add(x, y) {
-		if(x < this.xMin)
-			this.xMin = x;
-		else if(x > this.xMax)
-			this.xMax = x;
+	add(state) {
+		if(state.x < this.xMin)
+			this.xMin = state.x;
+		else if(state.x > this.xMax)
+			this.xMax = state.x;
 		
-		if(y < this.yMin)
-			this.yMin = y;
-		else if(y > this.yMax)
-			this.yMax = y;
+		if(state.y < this.yMin)
+			this.yMin = state.y;
+		else if(state.y > this.yMax)
+			this.yMax = state.y;
 		
-		this.x.push(x);
-		this.y.push(y);
+		this.x.push(state.x);
+		this.y.push(state.y);
+		this.cuts.push(this.cutting);
+		this.cutting = false;
 	},
 	
-	render(canvas, margin, fill) {
+	cut() {
+		this.cutting = true;
+	},
+	
+	setPaintStyle(context, scale) {
+		var color = "hsl(" + Math.random() * 360 + ", 60%, 20%)";
+		
+		context.lineWidth = 1 / scale;
+		context.fillStyle = context.strokeStyle = color;
+	},
+	
+	prepareContext(canvas, margin) {
 		var context = canvas.getContext("2d");
+		
 		var width = this.xMax - this.xMin;
 		var height = this.yMax - this.yMin;
 		var xScale = (canvas.width - 2 * margin) / width;
@@ -34,28 +50,74 @@ PathShape.prototype = {
 		var xShift = margin * (width / canvas.width);
 		var yShift = margin * (height / canvas.height);
 		
-		
 		if(xScale < yScale)
 			yShift -= (height * aspect - width) / 2;
 		else
 			xShift -= (width - height * aspect) / 2;
 		
-		context.strokeStyle = "black";
-		context.lineWidth = 1 / scale;
-		
 		context.setTransform(
 			scale, 0, 0,
 			scale, scale * -(this.xMin - xShift), scale * -(this.yMin - yShift));
+			
+		this.setPaintStyle(context, scale);
+	},
+	
+	render(canvas, margin, fill) {
+		var context = canvas.getContext("2d");
+
+		this.prepareContext(canvas, margin);
+		
 		context.beginPath();
 		context.moveTo(0, 0);
 		
 		for(var i = 0; i < this.x.length; ++i)
-			context.lineTo(this.x[i], this.y[i]);
+			if(this.cuts[i])
+				context.moveTo(this.x[i], this.y[i]);
+			else
+				context.lineTo(this.x[i], this.y[i]);
 		
 		if(fill)
 			context.fill();
 		else
 			context.stroke();
+	}
+}
+
+function State() {
+	this.x = this.y = 0;
+	this.angle = 0;
+	this.stack = [];
+}
+
+State.prototype = {
+	DEG_TO_RAD: 0.017453292519943,
+	
+	rotate(angle) {
+		this.angle += angle;
+	},
+	
+	extrude() {
+		var rads = this.angle * this.DEG_TO_RAD;
+		
+		this.x += Math.cos(rads);
+		this.y += Math.sin(rads);
+		
+		return this;
+	},
+	
+	push() {
+		this.stack.push({
+			"x": this.x,
+			"y": this.y,
+			"angle": this.angle});
+	},
+	
+	pop() {
+		var state = this.stack.pop();
+		
+		this.x = state.x;
+		this.y = state.y;
+		this.angle = state.angle;
 	}
 }
 
@@ -68,7 +130,6 @@ function Lindenmayer(axiom) {
 }
 
 Lindenmayer.prototype = {
-	DEG_TO_RAD: 0.017453292519943,
 	ITERATIONS_MIN: 0,
 	ITERATIONS_MAX: 9,
 	RULE_COUNT: 4,
@@ -126,25 +187,26 @@ Lindenmayer.prototype = {
 	
 	getPath() {
 		var path = new PathShape();
-		var angle = 0;
-		var x = 0;
-		var y = 0;
+		var state = new State();
 		
 		for(var i = 0; i < this.axiom.length; ++i) {
 			switch(this.axiom[i]) {
 				case "+":
-					angle -= this.angle;
+					state.rotate(-this.angle);
 					break;
 				case "-":
-					angle += this.angle;
+					state.rotate(this.angle);
+					break;
+				case "[":
+					state.push();
+					break;
+				case "]":
+					state.pop();
+					path.cut();
+					path.add(state);
 					break;
 				default:
-					var rads = angle * this.DEG_TO_RAD;
-				
-					x += Math.cos(rads);
-					y += Math.sin(rads);
-					
-					path.add(x, y);
+					path.add(state.extrude());
 					break;
 			}
 		}

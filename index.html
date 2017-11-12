@@ -20,6 +20,7 @@
 								<option value="l-preset-sierpinski-arrowhead-curve">Sierpińsky arrowhead curve</option>
 								<option value="l-preset-plant">Plant</option>
 								<option value="l-preset-plant-2">Plant 2</option>
+								<option value="l-preset-hilbert-curve">Hilbert curve</option>
 								<option value="l-preset-squares-fractal">Squares fractal</option>
 							</select>
 						</td>
@@ -28,23 +29,27 @@
 				<table>
 					<tr>
 						<td>Axiom:</td>
-						<td><input id="l-axiom" type="text" value="A++A++A"></input></td>
+						<td><input id="l-axiom" type="text"></input></td>
 						<td><input id="l-render-line" type="radio" name="l-render" onclick="render();" checked></td>
 						<td><label for="l-render-line">Lines</label></td>
 					</tr>
 					<tr>
 						<td>Angle:</td>
-						<td><input id="l-angle" type="text" value="60"></input></td>
+						<td><input id="l-angle" type="text"></input></td>
 						<td><input id="l-render-fill" type="radio" name="l-render" onclick="render();"></td>
 						<td><label for="l-render-fill">Fill</label></td>
 					</tr>
 					<tr>
+						<td>Constants:</td>
+						<td><input id="l-constants" type="text"></input></td>
+					</tr>
+					<tr>
 						<td>Iterations:</td>
-						<td><input id="l-iterations" type="text" value="4"></input></td>
+						<td><input id="l-iterations" type="text"></input></td>
 					</tr>
 					<tr>
 						<td>Rule 1:</td>
-						<td><input id="l-rule-1" type="text" value="A=A-A++A-A"></input></td>
+						<td><input id="l-rule-1" type="text"></input></td>
 					</tr>
 					<tr>
 						<td>Rule 2:</td>

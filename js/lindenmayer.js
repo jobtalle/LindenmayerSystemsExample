@@ -34,7 +34,7 @@ PathShape.prototype = {
 	setPaintStyle(context, scale) {
 		var color = "hsl(" + Math.random() * 360 + ", 60%, 20%)";
 		
-		context.lineWidth = 1 / scale;
+		context.lineWidth = 1.5 / scale;
 		context.fillStyle = context.strokeStyle = color;
 	},
 	
@@ -123,6 +123,7 @@ State.prototype = {
 
 function Lindenmayer(axiom) {
 	this.getAxiom();
+	this.getConstants();
 	this.getAngle();
 	this.getIterations();
 	this.getRules();
@@ -170,6 +171,10 @@ Lindenmayer.prototype = {
 		}
 	},
 	
+	getConstants() {
+		this.constants = document.getElementById("l-constants").value;
+	},
+	
 	getStyle() {
 		this.fill = document.getElementById("l-render-fill").checked;
 	},
@@ -207,7 +212,8 @@ Lindenmayer.prototype = {
 					path.add(state);
 					break;
 				default:
-					path.add(state.extrude());
+					if(this.constants.indexOf(this.axiom[i]) == -1)
+						path.add(state.extrude());
 					break;
 			}
 		}
@@ -233,9 +239,10 @@ function render() {
 	lindenmayer.render();
 }
 
-function setParameters(axiom, angle, iterations, rules) {
+function setParameters(axiom, angle, constants, iterations, rules) {
 	document.getElementById("l-axiom").value = axiom;
 	document.getElementById("l-angle").value = angle;
+	document.getElementById("l-constants").value = constants;
 	document.getElementById("l-iterations").value = iterations;
 	
 	for(var i = 1; i <= Lindenmayer.prototype.RULE_COUNT; ++i) {

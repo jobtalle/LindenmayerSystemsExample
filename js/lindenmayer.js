@@ -85,7 +85,7 @@ PathShape.prototype = {
 
 function State() {
 	this.x = this.y = 0;
-	this.angle = 0;
+	this.angle = -90;
 	this.stack = [];
 }
 
@@ -132,7 +132,7 @@ function Lindenmayer(axiom) {
 Lindenmayer.prototype = {
 	ITERATIONS_MIN: 0,
 	ITERATIONS_MAX: 9,
-	RULE_COUNT: 4,
+	RULE_COUNT: 8,
 	MARGIN: 8,
 	
 	getAxiom() {
@@ -202,6 +202,7 @@ Lindenmayer.prototype = {
 					break;
 				case "]":
 					state.pop();
+					
 					path.cut();
 					path.add(state);
 					break;
@@ -230,4 +231,21 @@ function render() {
 	
 	lindenmayer.applyRules();
 	lindenmayer.render();
+}
+
+function setParameters(axiom, angle, iterations, rules) {
+	document.getElementById("l-axiom").value = axiom;
+	document.getElementById("l-angle").value = angle;
+	document.getElementById("l-iterations").value = iterations;
+	
+	for(var i = 1; i <= Lindenmayer.prototype.RULE_COUNT; ++i) {
+		var ruleElement = document.getElementById("l-rule-" + i);
+		
+		if(i <= rules.length)
+			ruleElement.value = rules[i - 1];
+		else
+			ruleElement.value = "";
+	}
+	
+	render();
 }

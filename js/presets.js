@@ -12,17 +12,6 @@ function preset() {
 					"A=A-A++A-A"
 				]);
 			break;
-		case "l-preset-binary-tree":
-			setParameters(
-				"A",
-				"45",
-				"",
-				"7",
-				[
-					"A=B[-A]+A",
-					"B=BB"
-				]);
-			break;
 		case "l-preset-sierpinski-arrowhead-curve":
 			setParameters(
 				"A",
@@ -66,6 +55,16 @@ function preset() {
 				[
 					"A=-BC+ACA+CB-",
 					"B=+AC-BCB-CA+"
+				]);
+			break;
+		case "l-preset-mosaic":
+			setParameters(
+				"A-A-A-A",
+				"90",
+				"",
+				"3",
+				[
+					"A=AA-A+A-A-AA"
 				]);
 			break;
 		case "l-preset-squares-fractal":

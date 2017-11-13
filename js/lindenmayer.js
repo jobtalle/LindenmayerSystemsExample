@@ -133,7 +133,7 @@ function Lindenmayer(axiom) {
 Lindenmayer.prototype = {
 	ITERATIONS_MIN: 0,
 	ITERATIONS_MAX: 9,
-	RULE_COUNT: 8,
+	RULE_COUNT: 6,
 	MARGIN: 8,
 	
 	getAxiom() {

@@ -72,9 +72,20 @@ function preset() {
 				"A+A+A-A-A",
 				"90",
 				"",
-				"5",
+				"4",
 				[
 					"A=AXIOM"
+				]);
+			break;
+		case "l-gosper-curve":
+			setParameters(
+				"A",
+				"60",
+				"",
+				"4",
+				[
+					"A=A-B--B+A++AA+B-",
+					"B=+A-BB--B-A++A+B"
 				]);
 			break;
 	}
